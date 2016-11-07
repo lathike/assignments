@@ -74,6 +74,23 @@ public class RadiographServiceUnitTest {
     }
 
     @Test
+    public void givenAPatientHasAnXRayWeCanFetchIt() {
+        String patientsSocialSecurityNumber = "198001010000";
+
+        Radiograph xray = new Radiograph();
+        List<Radiograph> xrays = new ArrayList<>();
+        xrays.add(xray);
+
+        when(radiographRepository.findAll((Predicate) any())).thenReturn(xrays);
+
+        List<Radiograph> requestedXRays = SUT.findByPatient(patientsSocialSecurityNumber);
+        assertThat(requestedXRays)
+                .isNotEmpty()
+                .hasSize(1)
+                .contains(xray);
+    }
+
+    @Test
     public void givenNewMedicalStaffTypeWhenRequestingXRaysThrowsError() {
         MedicalStaff orderly = new MedicalStaff() {
             @Override

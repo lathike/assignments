@@ -48,6 +48,13 @@ public class RadiographController {
         return radiographService.findByPerformingRadiologist(socialSecurityNumber);
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping("ofpatient")
+    public Iterable<Radiograph> xraysPerformedOnPatient(@RequestParam("patient") String socialSecurityNumber) {
+        return radiographService.findByPatient(socialSecurityNumber);
+    }
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

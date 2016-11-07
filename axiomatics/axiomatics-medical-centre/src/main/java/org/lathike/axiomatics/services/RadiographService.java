@@ -37,7 +37,7 @@ public class RadiographService {
 
     public List<Radiograph> getFor(MedicalStaff medicalStaff) {
         Assert.notNull(medicalStaff, "Staff member cannot be null");
-        Assert.notNull(medicalStaff.getSocialSecurityNumber(), "Social security number should not be null");
+        assertIsValidSocialSecurityNumber(medicalStaff.getSocialSecurityNumber());
 
         List<Radiograph> xrays;
         if (medicalStaff instanceof Doctor) {
@@ -52,23 +52,28 @@ public class RadiographService {
     }
 
     public List<Radiograph> findByRequestingPhysician(String socialSecurityNumber) {
-        Assert.notNull(socialSecurityNumber, "Social security number should not be null");
-        Assert.hasLength("yyyyMMddxxxx", "Social security number must be of type 19xxmmddxxxx");
-
+        assertIsValidSocialSecurityNumber(socialSecurityNumber);
         return findBy(QRadiograph.radiograph.requestedBy.socialSecurityNumber.eq(socialSecurityNumber));
-
     }
 
     public List<Radiograph> findByPerformingRadiologist(String socialSecurityNumber) {
-        Assert.notNull(socialSecurityNumber, "Social security number should not be null");
-        Assert.hasLength("yyyyMMddxxxx", "Social security number must be of type 19xxmmddxxxx");
-
+        assertIsValidSocialSecurityNumber(socialSecurityNumber);
         return findBy(QRadiograph.radiograph.performedBy.socialSecurityNumber.eq(socialSecurityNumber));
+    }
+
+    public List<Radiograph> findByPatient(String socialSecurityNumber) {
+        assertIsValidSocialSecurityNumber(socialSecurityNumber);
+        return findBy(QRadiograph.radiograph.patient.socialSecurityNumber.eq(socialSecurityNumber));
     }
 
     private List<Radiograph> findBy(Predicate predicate) {
         Assert.notNull(predicate, "Cannot find for null predicates of radiographs");
         Iterable<Radiograph> xrays = radiographRepository.findAll(predicate);
         return StreamSupport.stream(xrays.spliterator(), false).collect(Collectors.toList());
+    }
+
+    private void assertIsValidSocialSecurityNumber(String socialSecurityNumber) {
+        Assert.notNull(socialSecurityNumber, "Social security number should not be null");
+        Assert.hasLength("yyyyMMddxxxx", "Social security number must be of type 19xxmmddxxxx");
     }
 }
