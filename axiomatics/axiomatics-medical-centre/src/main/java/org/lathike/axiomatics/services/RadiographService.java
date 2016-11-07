@@ -1,5 +1,7 @@
 package org.lathike.axiomatics.services;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import org.lathike.axiomatics.model.Doctor;
 import org.lathike.axiomatics.model.MedicalStaff;
@@ -63,12 +65,12 @@ public class RadiographService {
 
     public List<Radiograph> findByPatient(String socialSecurityNumber) {
         assertIsValidSocialSecurityNumber(socialSecurityNumber);
-        return findBy(QRadiograph.radiograph.patient.socialSecurityNumber.eq(socialSecurityNumber));
+        return findBy(QRadiograph.radiograph.patient.socialSecurityNumber.eq(socialSecurityNumber), new OrderSpecifier(Order.DESC, QRadiograph.radiograph.requestedOn));
     }
 
-    private List<Radiograph> findBy(Predicate predicate) {
+    private List<Radiograph> findBy(Predicate predicate, OrderSpecifier... orderSpecifiers) {
         Assert.notNull(predicate, "Cannot find for null predicates of radiographs");
-        Iterable<Radiograph> xrays = radiographRepository.findAll(predicate);
+        Iterable<Radiograph> xrays = radiographRepository.findAll(predicate, orderSpecifiers);
         return StreamSupport.stream(xrays.spliterator(), false).collect(Collectors.toList());
     }
 
