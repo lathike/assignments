@@ -1,5 +1,6 @@
 package org.lathike.axiomatics.controllers;
 
+import org.lathike.axiomatics.model.Doctor;
 import org.lathike.axiomatics.model.MedicalStaff;
 import org.lathike.axiomatics.model.Radiograph;
 import org.lathike.axiomatics.services.AuthenticationService;
@@ -51,6 +52,8 @@ public class RadiographController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Radiograph create(Radiograph radiograph) {
+        Optional<Doctor> doctor = authenticationService.getLoggedInPhysician();
+        doctor.ifPresent(doc -> radiograph.setRequestedBy(doc));
         return radiographService.create(radiograph);
     }
 }

@@ -1,5 +1,6 @@
 package org.lathike.axiomatics.services;
 
+import org.lathike.axiomatics.model.Doctor;
 import org.lathike.axiomatics.model.MedicalStaff;
 import org.lathike.axiomatics.repositories.MedicalStaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,23 @@ public class AuthenticationService {
     }
 
     public Optional<MedicalStaff> getLoggedInStaff() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String socialSecurityNumber = (String) auth.getPrincipal();
+        String socialSecurityNumber = getPrincipalsSocialSecurityNumber();
         return medicalStaffRepository.findBySocialSecurityNumber(socialSecurityNumber);
     }
+
+    public Optional<Doctor> getLoggedInPhysician() {
+        String socialSecurityNumber = getPrincipalsSocialSecurityNumber();
+        Optional<MedicalStaff> staff = medicalStaffRepository.findBySocialSecurityNumber(socialSecurityNumber);
+
+        return staff.filter(medicalStaff -> medicalStaff instanceof Doctor)
+                .map(Doctor.class::cast);
+    }
+
+    private String getPrincipalsSocialSecurityNumber() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String socialSecurityNumber = (String) auth.getPrincipal();
+        return socialSecurityNumber;
+    }
+
 
 }

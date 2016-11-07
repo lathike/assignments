@@ -33,10 +33,6 @@ public class Patient implements Serializable {
     @JoinColumn(name = "doctorid")
     private Doctor doctor;
 
-//    @OneToMany(mappedBy = "patient")
-//    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-//    private Set<Radiograph> xrays;
-
     public int getId() {
         return id;
     }
@@ -77,11 +73,4 @@ public class Patient implements Serializable {
         this.lastName = lastName;
     }
 
-//    public Set<Radiograph> getXrays() {
-//        return xrays;
-//    }
-
-//    public void setXrays(Set<Radiograph> xrays) {
-//        this.xrays = xrays;
-//    }
 }
