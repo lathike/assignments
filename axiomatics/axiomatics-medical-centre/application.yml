@@ -1,0 +1,21 @@
+debug: true
+server:
+  port: 8090
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  h2:
+    console:
+      enabled: true
+  datasource:
+      url: jdbc:h2:./axiomatics-medical-centre
+
+
+
+
+
+
+
