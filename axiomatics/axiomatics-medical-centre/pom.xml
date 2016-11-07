@@ -66,11 +66,6 @@
             <version>${querydsl.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hibernate5</artifactId>
             <version>${jackson.version}</version>
@@ -95,12 +90,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>eu.codearte.catch-exception</groupId>
-            <artifactId>catch-throwable</artifactId>
-            <version>${catch.exception.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj.core.version}</version>
@@ -118,6 +107,18 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- generates query dsl meta entities -->
