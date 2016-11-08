@@ -6,6 +6,7 @@ import org.lathike.axiomatics.repositories.MedicalStaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,9 +36,8 @@ public class AuthenticationService {
 
     private String getPrincipalsSocialSecurityNumber() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String socialSecurityNumber = (String) auth.getPrincipal();
+        User principal = (User) auth.getPrincipal();
+        String socialSecurityNumber = principal.getUsername();
         return socialSecurityNumber;
     }
-
-
 }

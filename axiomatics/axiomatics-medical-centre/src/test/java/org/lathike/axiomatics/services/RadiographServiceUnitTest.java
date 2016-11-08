@@ -1,6 +1,7 @@
 package org.lathike.axiomatics.services;
 
 import com.googlecode.catchexception.apis.BDDCatchException;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import org.lathike.axiomatics.model.Radiologist;
 import org.lathike.axiomatics.repositories.RadiographRepository;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ public class RadiographServiceUnitTest {
         xrays.add(xray);
 
         when(radiographRepository.findAll((Predicate) any())).thenReturn(xrays);
+        when(radiographRepository.findAll((Predicate) any(), (OrderSpecifier<?>) any())).thenReturn(xrays);
 
         List<Radiograph> requestedXRays = SUT.getFor(doctor);
         assertThat(requestedXRays)
@@ -64,7 +67,7 @@ public class RadiographServiceUnitTest {
         List<Radiograph> xrays = new ArrayList<>();
         xrays.add(xray);
 
-        when(radiographRepository.findAll((Predicate) any())).thenReturn(xrays);
+        when(radiographRepository.findAll((Predicate) any(), (OrderSpecifier<?>) any())).thenReturn(xrays);
 
         List<Radiograph> requestedXRays = SUT.getFor(radiologist);
         assertThat(requestedXRays)
@@ -81,7 +84,7 @@ public class RadiographServiceUnitTest {
         List<Radiograph> xrays = new ArrayList<>();
         xrays.add(xray);
 
-        when(radiographRepository.findAll((Predicate) any())).thenReturn(xrays);
+        when(radiographRepository.findAll((Predicate) any(), (OrderSpecifier<?>) any())).thenReturn(xrays);
 
         List<Radiograph> requestedXRays = SUT.findByPatient(patientsSocialSecurityNumber);
         assertThat(requestedXRays)

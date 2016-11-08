@@ -13,6 +13,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.authorizeRequests()
-                .anyRequest().fullyAuthenticated().and().httpBasic().and().csrf().disable();
+                .anyRequest().fullyAuthenticated()
+                .and().httpBasic()
+                .and().csrf().disable();
     }
 }

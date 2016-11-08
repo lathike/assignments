@@ -7,6 +7,7 @@ import org.lathike.axiomatics.services.AuthenticationService;
 import org.lathike.axiomatics.services.RadiographService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,9 +57,10 @@ public class RadiographController {
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Radiograph create(Radiograph radiograph) {
+    @Produces(MediaType.APPLICATION_JSON)
+    @RequestMapping("create")
+    public Radiograph create(@RequestBody Radiograph radiograph) {
         Optional<Doctor> doctor = authenticationService.getLoggedInPhysician();
         doctor.ifPresent(doc -> radiograph.setRequestedBy(doc));
         return radiographService.create(radiograph);
