@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +35,11 @@ public class PatientsController {
     @GET
     @RequestMapping("{socialSecurityNumber}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Patient getPatient(@PathVariable("socialSecurityNumber") String socialSecurityNumber) {
-        return patientService.findPatientBySocialSecurityNumber(socialSecurityNumber).orElse(null);
+    public ResponseEntity<Patient> getPatient(@PathVariable("socialSecurityNumber") String socialSecurityNumber) {
+        Optional<Patient> patient = patientService.findPatientBySocialSecurityNumber(socialSecurityNumber);
+        return patient
+                .map(p -> new ResponseEntity<>(p, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @POST
@@ -51,5 +56,4 @@ public class PatientsController {
                 .orElseThrow(() -> new IllegalArgumentException("You are not authorized to register patients on behalf of other staff"));
         return registered;
     }
-
 }
